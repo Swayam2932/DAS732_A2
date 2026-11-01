@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive InfoVis dashboard for clickstream networks and Redfin housing markets">
+  <title>InfoVis Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/d3.v7.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-copy">
+      <p class="eyebrow">DAS732 · ASSIGNMENT 2 · INFOVIS</p>
+      <h1>InfoVis Explorer</h1>
+    </div>
+  </header>
+
+  <nav class="tab-bar" aria-label="InfoVis tasks">
+    <button class="tab active" data-target="network-panel">1 · Network</button>
+    <button class="tab" data-target="parallel-panel">2 · Parallel coordinates</button>
+    <button class="tab" data-target="treemap-panel">3 · Zoomable treemaps</button>
+    <button class="tab" data-target="distribution-panel">4 · Horizon & ridgeline</button>
+  </nav>
+
+  <main>
+    <section id="network-panel" class="panel active-panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">TASK 1 · NETWORK</p>
+          <h2>Internal click-flow network</h2>
+          <p class="section-copy">Directed page-to-page <code>link</code> flows. Node size reflects full in/out click volume; edge width reflects clicks on the selected core graph.</p>
+        </div>
+        <div class="interaction-note">Choose a layout · filter the core · select a page to trace its neighbors</div>
+      </div>
+      <div class="control-row">
+        <label>Layout
+          <select id="layout-select">
+            <option value="spring">Spring · Fruchterman–Reingold</option>
+            <option value="kamada_kawai">Kamada–Kawai</option>
+            <option value="forceatlas2">ForceAtlas2</option>
+          </select>
+        </label>
+        <label class="range-control">Visible pages <output id="node-count-value">90</output>
+          <input id="node-count" type="range" min="30" max="120" value="90" step="10">
+        </label>
+        <label class="range-control">Minimum edge clicks <output id="edge-threshold-value">10</output>
+          <input id="edge-threshold" type="range" min="1" max="6" value="1" step="0.1">
+        </label>
+        <label class="search-control">Find a page
+          <input id="node-search" type="search" placeholder="Search page title…">
+        </label>
+        <label class="check-control"><input id="show-labels" type="checkbox" checked> Label high-traffic pages</label>
+        <button id="clear-node" class="secondary-button">Clear selection</button>
+      </div>
+      <div class="chart-frame network-frame">
+        <svg id="network-chart" role="img" aria-label="Interactive directed click-flow network"></svg>
+      </div>
+      <div id="network-detail" class="detail-strip">Hover over a page or edge for details. Click a page to highlight its immediate neighbors.</div>
+      <section class="layout-comparison" aria-labelledby="layout-comparison-title">
+        <h3 id="layout-comparison-title">Compare the three layouts</h3>
+        <p>Select a preview to show that algorithm in the main network. Spring emphasizes local clusters, Kamada–Kawai balances graph distances, and ForceAtlas2 uses attraction and repulsion to separate connected regions.</p>
+        <div class="layout-preview-grid">
+          <button class="layout-preview" data-layout="spring"><strong>Spring · Fruchterman–Reingold</strong><svg id="preview-spring" role="img" aria-label="Spring layout preview"></svg></button>
+          <button class="layout-preview" data-layout="kamada_kawai"><strong>Kamada–Kawai</strong><svg id="preview-kamada_kawai" role="img" aria-label="Kamada–Kawai layout preview"></svg></button>
+          <button class="layout-preview" data-layout="forceatlas2"><strong>ForceAtlas2</strong><svg id="preview-forceatlas2" role="img" aria-label="ForceAtlas2 layout preview"></svg></button>
+        </div>
+      </section>
+      <p class="data-note" id="network-coverage"></p>
+    </section>
+
+    <section id="parallel-panel" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">TASK 2A · REDFIN MULTIVARIATE DATA</p>
+          <h2>Parallel coordinates with edge bundling</h2>
+          <p class="section-copy">Each polyline represents a metro in the selected month. Housing measures share normalized axes; lines bundle toward the median profile for their fixed market-size tier.</p>
+        </div>
+        <div class="interaction-note">Drag axes to reorder · brush any axis to filter · adjust bundling strength</div>
+      </div>
+      <div class="control-row">
+        <label>Month
+          <select id="parallel-month"></select>
+        </label>
+        <label class="range-control">Bundle strength <output id="bundle-value">0.45</output>
+          <input id="bundle-strength" type="range" min="0" max="0.9" value="0.45" step="0.05">
+        </label>
+        <fieldset class="type-filter"><legend>Market-size tiers</legend><div id="tier-toggles"></div></fieldset>
+        <button id="clear-brushes" class="secondary-button">Clear brushes</button>
+      </div>
+      <div class="legend-row" id="bundle-legend"></div>
+      <div class="chart-frame parallel-frame">
+        <svg id="parallel-chart" role="img" aria-label="Interactive parallel coordinates chart with bundled metro housing data"></svg>
+      </div>
+      <div id="parallel-detail" class="detail-strip">Hover over a metro line for its market measures. Drag axes to reorder; brush one or more dimensions to filter metros.</div>
+    </section>
+
+    <section id="treemap-panel" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">TASK 2B · HIERARCHICAL DATA</p>
+          <h2>Zoomable housing-market treemap</h2>
+          <p class="section-copy" id="treemap-method">Explore state and metro hierarchies for one monthly snapshot.</p>
+        </div>
+      </div>
+      <div class="control-row">
+        <label>Month<select id="treemap-month"></select></label>
+        <label>Area represents
+          <select id="treemap-size">
+            <option value="homes_sold">Homes sold</option>
+            <option value="active_listings">Active listings</option>
+            <option value="inventory">Inventory</option>
+            <option value="pending_sales">Pending sales</option>
+          </select>
+        </label>
+        <label>Color represents
+          <select id="treemap-color">
+            <option value="sale_price">Median sale price</option>
+            <option value="sale_price_yoy">Sale-price change YoY</option>
+            <option value="days_on_market">Days on market</option>
+          </select>
+        </label>
+        <label>Hierarchy model
+          <select id="treemap-model">
+            <option value="state">State → metro</option>
+            <option value="tier">Market-size tier → state → metro</option>
+          </select>
+        </label>
+      </div>
+      <div id="treemap-legend" class="treemap-legend"></div>
+      <div id="treemap-breadcrumbs" class="breadcrumbs"></div>
+      <div class="chart-frame treemap-frame">
+        <svg id="treemap-chart" role="img" aria-label="Zoomable treemap of metro housing activity"></svg>
+      </div>
+      <div id="treemap-detail" class="detail-strip">Click a state or tier to zoom in. Use the breadcrumbs to move back up; hover for metro measures.</div>
+      <p class="data-note">Area encodes an additive market count; color encodes the selected measure. Median prices are shown as color, not added together.</p>
+    </section>
+
+    <section id="distribution-panel" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">TASK 3 · GROUP-WISE DISTRIBUTIONS</p>
+          <h2>Horizon and ridgeline views</h2>
+          <p class="section-copy">The housing data contains monthly observations, so these horizon plots show real temporal changes. Ridgelines compare distributions across years and metro-size groups.</p>
+        </div>
+      </div>
+      <div id="distribution-insights" class="insight-card">Loading Redfin summary…</div>
+      <div class="distribution-grid">
+        <article class="distribution-card">
+          <h3>Horizon variation 1 · sale-price change</h3>
+          <p>Monthly metro-group medians of sale-price change from a year earlier, separated into positive and negative horizon bands around zero.</p>
+          <img src="images/redfin_horizon_price_yoy.png" alt="Horizon plot of monthly year-over-year sale-price change by metro size">
+        </article>
+        <article class="distribution-card">
+          <h3>Horizon variation 2 · time on market</h3>
+          <p>Monthly medians of year-over-year days-on-market change grouped by Census region. Positive values mean homes take longer to sell than a year earlier.</p>
+          <img src="images/redfin_horizon_days_yoy.png" alt="Horizon plot of monthly year-over-year days-on-market change by Census region">
+        </article>
+        <article class="distribution-card">
+          <h3>Ridgeline variation 1 · annual prices</h3>
+          <p>Each ridge shows the distribution of metro-level annual median sale prices. The log scale keeps lower- and higher-priced markets visible together.</p>
+          <img src="images/redfin_ridgeline_price_by_year.png" alt="Ridgeline plot comparing annual median sale-price distributions across metros">
+        </article>
+        <article class="distribution-card">
+          <h3>Ridgeline variation 2 · days on market by metro size</h3>
+          <p>Metro-level median days on market over the latest 12 months, compared across the fixed homes-sold size tiers.</p>
+          <img src="images/redfin_ridgeline_days_by_tier.png" alt="Ridgeline plot of days on market distributions by metro-size tier">
+        </article>
+      </div>
+    </section>
+  </main>
+  <div id="tooltip" class="tooltip" role="status"></div>
+  <footer>Local InfoVis dashboard · Clickstream network and Redfin housing markets are kept as distinct source datasets</footer>
+</body>
+</html>

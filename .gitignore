@@ -1,0 +1,10 @@
+.venv/
+.cache/
+.mplconfig/
+__pycache__/
+*.py[cod]
+.DS_Store
+/task1/data/raw/
+/task1/data/processed/*.nc
+/task2/clickstream_data1.tsv
+/task2/redfin_housing.csv

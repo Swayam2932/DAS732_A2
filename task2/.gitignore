@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.py[cod]
+clickstream_data1.tsv
+redfin_housing.csv
