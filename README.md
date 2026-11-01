@@ -9,10 +9,9 @@ Get the files from the [Assignment 2 data folder on SharePoint](https://iiitbac-
 | Task | File | Put it here | Needed for |
 |---|---|---|---|
 | **Task 1 — SciVis** | `gridmet_2022-01_to_2022-03.nc` | `task1/data/processed/gridmet_2022-01_to_2022-03.nc` | Required to run SciVis. This is the prepared January–March 2022 file. |
-| **Task 2 — InfoVis** | `clickstream_data1.tsv` | `task2/clickstream_data1.tsv` | Optional; only needed to regenerate the clickstream network files. |
-| **Task 2 — InfoVis** | `redfin_housing.csv` | `task2/redfin_housing.csv` | Optional; only needed to regenerate Redfin files and figures. |
+| **Task 2 — InfoVis** | No download needed | Already included under `task2/data/processed/` | Task 2 is ready to run after cloning the repository. |
 
-Task 2’s prepared files are already included in the repository, so you do not need the two optional source files just to run the dashboard. To regenerate them after placing the source files, run `python task2/prepare_infovis.py` and `python task2/prepare_redfin.py` from the repository root.
+For the dashboards, download only the required SciVis file shown above. Task 2’s data and figures are included in the repository.
 
 ## Install and run both dashboards
 

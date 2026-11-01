@@ -23,13 +23,12 @@ Follow the combined setup instructions in the repository's root `README.md`. The
 2. **Contour mapping** — view Marching Squares isolines, filled contours, or a comparison of both. Hover to inspect locations and values.
 3. **Quiver plot** — explore wind speed and direction with adjustable arrow sampling and scaling. Hover a vector for wind speed, wind-from direction, and eastward/northward components.
 
-If the prepared NetCDF file is missing, the dashboard displays the expected path. `process_gridmet.py` is an optional alternative that downloads and combines the annual gridMET source variables.
+If the prepared NetCDF file is missing, download it from the A2 SharePoint data folder and place it at the path listed above.
 
 ## Project files
 
 - `app.py` — Streamlit dashboard.
 - `scivis_utils.py` — data loading, field conversion, plotting, and vector helpers.
 - `requirements.txt` — Python dependencies for running the dashboard.
-- `process_gridmet.py` — optional source-data download and preprocessing script.
 - `generate_scivis_artifacts.py` — optional script for generating static assignment figures and the GIF; it requires the prepared NetCDF file.
 - `images/scivis/fig5_precipitation_7sample_animation.gif` — animation shown in the dashboard.
