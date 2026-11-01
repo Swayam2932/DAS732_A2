@@ -7,7 +7,7 @@ An interactive Streamlit dashboard for three SciVis tasks using the gridMET CONU
 - Python 3.10 or newer
 - The prepared NetCDF file `gridmet_2022-01_to_2022-03.nc` (90 daily records from 2022-01-01 through 2022-03-31)
 
-The NetCDF file is intentionally not stored in this Git repository because it is large (about 438 MB). Obtain the prepared file from your project files and place it at:
+The NetCDF file is intentionally not stored in GitHub because it is large (about 438 MB). Download `gridmet_2022-01_to_2022-03.nc` from the [A2 SharePoint data folder](https://iiitbac-my.sharepoint.com/:f:/g/personal/swayam_savaliya_iiitb_ac_in/IgCrdybQ9RHERJXcxIb6hYxXAeQTCuwz6rFaqsATyG0z4zI?e=k06yQH) and place it at this path inside the `task1` folder:
 
 ```text
 data/processed/gridmet_2022-01_to_2022-03.nc
@@ -15,7 +15,7 @@ data/processed/gridmet_2022-01_to_2022-03.nc
 
 ## Setup and run
 
-Follow the combined setup instructions in the repository's root `README.md`. From the assignment root, create the prepared data with `python task1/process_gridmet.py` if the NetCDF file is not present, then start both task dashboards together with `python main.py`.
+Follow the combined setup instructions in the repository's root `README.md`. The prepared NetCDF above is the only data file required to run Task 1. Once it is in place, start both task dashboards from the repository root with `python main.py`.
 
 ## Dashboard tabs
 
@@ -23,7 +23,7 @@ Follow the combined setup instructions in the repository's root `README.md`. Fro
 2. **Contour mapping** — view Marching Squares isolines, filled contours, or a comparison of both. Hover to inspect locations and values.
 3. **Quiver plot** — explore wind speed and direction with adjustable arrow sampling and scaling. Hover a vector for wind speed, wind-from direction, and eastward/northward components.
 
-If the prepared NetCDF file is missing, the dashboard displays the expected path. To recreate the quarter dataset instead, install the requirements and run `python process_gridmet.py`; that optional script downloads the 2022 source variables from the official gridMET archive and writes the prepared file to `data/processed/`.
+If the prepared NetCDF file is missing, the dashboard displays the expected path. `process_gridmet.py` is an optional alternative that downloads and combines the annual gridMET source variables.
 
 ## Project files
 

@@ -5,10 +5,9 @@ A local dashboard for the InfoVis part of DAS732 Assignment 2. The network view 
 ## Requirements
 
 - Python 3.10 or newer
-- `clickstream_data1.tsv` and `redfin_housing.csv` in this directory
 - A modern browser
 
-The clickstream TSV is about 1.4 GB. The Redfin CSV is about 20 MB and contains 75,665 monthly metro records from January 2020 through August 2026. Raw input files are ignored by Git; keep the source files beside the preparation scripts.
+The prepared dashboard data is included in the repository, so neither raw dataset is needed just to run Task 2. If you want to regenerate the outputs, download `clickstream_data1.tsv` and `redfin_housing.csv` from the [A2 SharePoint data folder](https://iiitbac-my.sharepoint.com/:f:/g/personal/swayam_savaliya_iiitb_ac_in/IgCrdybQ9RHERJXcxIb6hYxXAeQTCuwz6rFaqsATyG0z4zI?e=k06yQH) and put both files directly in this `task2` folder. The clickstream TSV is about 1.4 GB; the Redfin CSV is about 20 MB.
 
 ## Setup and run
 
