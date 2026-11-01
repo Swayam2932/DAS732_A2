@@ -311,7 +311,6 @@ function initRedfinParallel(summary) {
   monthSelect.addEventListener("change",()=>loadMonth(monthSelect.value));
   document.querySelector("#bundle-strength").addEventListener("input",async()=>{const data=await loadHousingMonth(currentMonth);draw(data.metros);});
   toggleBox.addEventListener("change",async()=>{const data=await loadHousingMonth(currentMonth);draw(data.metros);});
-  document.querySelector("#clear-brushes").addEventListener("click",async()=>{brushes.clear();const data=await loadHousingMonth(currentMonth);draw(data.metros);});
   loadMonth(currentMonth);
 }
 
